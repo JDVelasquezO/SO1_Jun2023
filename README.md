@@ -13,3 +13,9 @@
 ### Subir archivos con curl y [file.io](https://www.file.io/)
 
 ### Documentación de [Docker para Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+
+### Hacer que Docker no pida [sudo](https://docs.docker.com/engine/install/linux-postinstall/)
+
+### Sitio de [Docker hub](https://hub.docker.com/)
+
+### Documentación de [Fiber](https://github.com/gofiber/fiber)
