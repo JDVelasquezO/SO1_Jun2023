@@ -19,3 +19,5 @@
 ### Sitio de [Docker hub](https://hub.docker.com/)
 
 ### Documentación de [Fiber](https://github.com/gofiber/fiber)
+
+### Ejecutar Docker sin ser [root](https://docs.docker.com/engine/install/linux-postinstall/)
