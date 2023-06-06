@@ -2,13 +2,23 @@ package main
 
 import (
 	"fmt"
+	"github.com/gofiber/fiber/v2"
 	"github.com/shirou/gopsutil/v3/cpu"
 	"log"
 	"time"
 )
 
 func main() {
-	getCpu()
+	app := fiber.New()
+
+	go getCpu()
+
+	err := app.Listen(":8000")
+	if err != nil {
+		log.Fatalln("Error ", err)
+	}
+
+	time.Sleep(time.Second * 500)
 }
 
 func getCpu() {
