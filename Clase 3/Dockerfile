@@ -11,6 +11,9 @@ COPY package-lock.json ./
 # Ejecutar el comando para obtener librerías
 RUN npm install
 
+# Llamar variables de entorno
+ENV DB_HOST localhost
+
 # Copiar el resto del código que se va a ejecutar
 COPY . .
 
