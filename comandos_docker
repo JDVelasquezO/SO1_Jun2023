@@ -21,3 +21,18 @@ docker rm id_container
 
 # Eliminar imagen
 docker rmi id_image
+
+# Descargar y ejecutar docker-compose (-d: segundo plano)
+docker-compose up [-d] 
+
+# Cerrar y eliminar contenedores
+docker-compose down [-d]
+
+# Ver historial de comandos
+history | grep [command]
+
+# Ver procesos
+ps aux | grep [process]
+
+# Matar proceso por PID
+kill -9 [pid]
