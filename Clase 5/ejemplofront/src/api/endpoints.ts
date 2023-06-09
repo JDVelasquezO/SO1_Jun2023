@@ -1,7 +1,7 @@
-const uri = "http://localhost:3000";
+// const uri = "http://localhost:3000";
 
 export function getCpu() {
-    return fetch(`${uri}/getCpu`, {
+    return fetch(`/getCpu`, {
         headers: { 'Content-Type': 'application/json' },
         method: 'GET',
     });

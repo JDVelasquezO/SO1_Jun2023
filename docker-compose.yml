@@ -1,0 +1,54 @@
+version: '3'
+
+services:
+  database:
+    image: mongo
+    container_name: mongo_container
+    restart: always
+    environment:
+      - MONGO_INIT_DATABASE=DB
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - '27017:27017'
+
+  modules:
+    image: jdveloper/moduloejemplo
+    container_name: module_container
+    restart: always
+    environment:
+      - DB_HOST=database
+    ports:
+      - '8000:8000'
+    depends_on:
+      - database
+    links:
+      - database
+
+  api:
+    image: jdveloper/apiejemplo
+    container_name: api_container
+    environment:
+      - DB_HOST=database
+    ports:
+      - '3000:3000'
+    restart: always
+    depends_on:
+      - modules
+    links:
+      - modules
+
+  front:
+    image: jdveloper/front_ejemplo
+    container_name: front_container
+    ports:
+      - '5173:5173'
+    restart: always
+    depends_on:
+      - api
+    links:
+      - api
+
+volumes:
+  mongo-data:
+    external: false
