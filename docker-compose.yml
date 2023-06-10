@@ -15,6 +15,12 @@ services:
   modules:
     image: jdveloper/moduloejemplo
     container_name: module_container
+    privileged: true
+    volumes:
+      - type: bind
+        source: /proc
+        target: /proc
+    pid: host
     restart: always
     environment:
       - DB_HOST=database
