@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocketIO</title>
+</head>
+<body>
+    <h1>Lista de Tareas</h1>
+    <ul id="tareas"></ul>
+    <form id="form">
+        <input type="text" name="" id="tarea"><br>
+        <button>Agregar</button>
+    </form>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+
+        let tareas = document.getElementById("tareas");
+        let form = document.getElementById("form");
+        let input = document.getElementById("tarea");
+
+        form.addEventListener("submit", e => {
+            e.preventDefault();
+            if ( input.value ) {
+                socket.emit("task", input.value);
+                input.value = '';
+            }
+        });
+
+        socket.on('task', (t) => {
+            let item = document.createElement('li');
+            item.textContent = t;
+            tareas.appendChild(item);
+            window.scrollTo(0, document.body.scrollHeight);
+            // console.log(t);
+        });
+
+    </script>
+</body>
+</html>
