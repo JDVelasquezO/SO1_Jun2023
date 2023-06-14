@@ -6,6 +6,17 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
+const mysql = require("mysql");
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    database: 'test'
+});
+
+db.connect(err => {
+    if (err) console.log(err);
+});
+
 app.get("/", (req, res) => {
     res.sendFile(__dirname + "/index.html");
 });
@@ -19,6 +30,7 @@ io.on('connection', (socket) => {
     socket.on("task", (task) => {
         // console.log("Tarea: ", task);
         io.emit('task', task);
+        db.query("INSERT INTO task (task_desc) VALUES (?)", task);
     });
 });
 
