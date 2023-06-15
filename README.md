@@ -21,3 +21,9 @@
 ### Documentación de [Fiber](https://github.com/gofiber/fiber)
 
 ### Ejecutar Docker sin ser [root](https://docs.docker.com/engine/install/linux-postinstall/)
+
+### Subir archivos con file.io:
+#### curl -F "file=@docker-compose.yml" -s -w "\n" https://file.io
+
+### Bajar archivos con file.io
+#### curl https://file.io/pdhyQl1IZwtY --output docker-compose.yml
