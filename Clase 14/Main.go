@@ -5,18 +5,42 @@ import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/redis/go-redis/v9"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 	"log"
 	"strconv"
 )
+
+var Database *gorm.DB
+var Uri = "root:root123@tcp(35.202.95.255)/test?charset=utf8mb4&parseTime=True&loc=Local"
 
 var ctx = context.Background()
 var rdb *redis.Client
 
 type Data struct {
+	gorm.Model
 	Album  string
 	Year   string
 	Artist string
 	Ranked string
+}
+
+func mysqlConnect() error {
+	var err error
+	Database, err = gorm.Open(mysql.Open(Uri), &gorm.Config{
+		SkipDefaultTransaction: true,
+		PrepareStmt:            true,
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = Database.AutoMigrate(&Data{})
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func redisConnect() {
@@ -47,6 +71,13 @@ func insertData(c *fiber.Ctx) error {
 		Ranked: data["ranked"],
 	}
 
+	go insertRedis(rank)
+	go insertMysql(rank)
+
+	return nil
+}
+
+func insertRedis(rank Data) {
 	array := rank.Artist + "-" + rank.Year
 	ranked, _ := strconv.ParseFloat(rank.Ranked, 64)
 
@@ -61,19 +92,25 @@ func insertData(c *fiber.Ctx) error {
 	key := array + "-" + rank.Album
 	rdb.HIncrBy(ctx, key, rank.Ranked, 1)
 
-	fmt.Println(data)
+	fmt.Println(rank)
+}
 
-	return nil
+func insertMysql(rank Data) {
+	Database.Create(&rank)
 }
 
 func main() {
 	app := fiber.New()
 
 	redisConnect()
+	err := mysqlConnect()
+	if err != nil {
+		return
+	}
 
 	app.Post("/insert", insertData)
 
-	err := app.Listen(":3000")
+	err = app.Listen(":3000")
 	if err != nil {
 		return
 	}
