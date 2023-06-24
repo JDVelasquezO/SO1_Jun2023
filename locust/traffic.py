@@ -26,7 +26,7 @@ class Reader():
     def load(self):
         print(">> Reader: Iniciando lectura del archivo de datos")
         try:
-            with open("data.json", "r") as data_file:
+            with open("data2.json", "r") as data_file:
                 self.array = json.loads(data_file.read())
         except Exception as error:
             print(f'>> Reader: Error en {error}')
